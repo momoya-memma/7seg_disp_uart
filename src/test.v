@@ -105,13 +105,26 @@ module top_module(
         , .digit2(disp_signal_digit2)
         , .disp(disp_signal));
 
-    assign ja[0] = disp_signal[0];
-    assign ja[1] = disp_signal[1];
-    assign ja[2] = disp_signal[2];
-    assign ja[3] = disp_signal[3];
-    assign jb[0] = disp_signal[4];
-    assign jb[1] = disp_signal[5];
-    assign jb[2] = disp_signal[6];
+	genvar i;
+
+	generate
+		for(i=0; i<4;i=i+1) begin: block1
+			assign ja[i] = disp_signal[i];
+		end
+
+		for(i=0; i<3;i=i+1) begin: block2
+			assign jb[i] = disp_signal[i+4];
+		end
+	endgenerate
+
+
+    //assign ja[0] = disp_signal[0];
+    //assign ja[1] = disp_signal[1];
+    //assign ja[2] = disp_signal[2];
+    //assign ja[3] = disp_signal[3];
+    //assign jb[0] = disp_signal[4];
+    //assign jb[1] = disp_signal[5];
+    //assign jb[2] = disp_signal[6];
     assign jb[3] = sel;
 endmodule
 
