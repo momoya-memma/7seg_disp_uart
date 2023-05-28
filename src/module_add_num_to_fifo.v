@@ -1,7 +1,6 @@
 
 `timescale 1ns / 1ps
 
-`define TEST
 `ifdef ENV_VIVADO
 `include "./src/common.v"
 `endif
@@ -27,7 +26,6 @@ module add_num_to_fifo(
 		end
 	end
 
-`ifdef TEST
     always @(posedge clk) begin
         if(rst == 0) begin
             digit1_data <= 0;
@@ -42,28 +40,5 @@ module add_num_to_fifo(
             end
         end
     end
-`else
-    reg [6:0] delay_counter;
 
-    always @(posedge clk) begin
-        if(rst == 0) begin
-            digit1_data <= 0;
-            digit2_data <= 0;
-            previous_shift_clk <= 0;
-            delay_counter <= 0;
-        end else begin
-            if(previous_shift_clk == shift_clk) begin
-            end else begin
-                if(delay_counter > 7'd100) begin/*input_dataの値が確定するまで100カウント遅延させてから取得する*/
-                    digit1_data <= input_data;
-                    digit2_data <= digit1_data;
-                    previous_shift_clk <= ~previous_shift_clk;
-                    delay_counter <= 7'b0;
-                end else begin
-                    delay_counter <= delay_counter+7'b1;
-                end
-            end
-        end
-    end
-`endif
 endmodule

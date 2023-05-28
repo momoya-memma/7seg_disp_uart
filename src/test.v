@@ -117,14 +117,6 @@ module top_module(
 		end
 	endgenerate
 
-
-    //assign ja[0] = disp_signal[0];
-    //assign ja[1] = disp_signal[1];
-    //assign ja[2] = disp_signal[2];
-    //assign ja[3] = disp_signal[3];
-    //assign jb[0] = disp_signal[4];
-    //assign jb[1] = disp_signal[5];
-    //assign jb[2] = disp_signal[6];
     assign jb[3] = sel;
 endmodule
 
