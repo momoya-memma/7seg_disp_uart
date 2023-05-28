@@ -1,4 +1,15 @@
-module receive_uart_rx(input wire clk, input wire rst , input wire receive_signal, output reg [7:0] receive_data, output reg received_toggle_signal);
+`timescale 1ns / 1ps
+`ifdef ENV_VIVADO
+`include "./src/common.v"
+`endif
+
+module receive_uart_rx(
+	input wire clk
+	, input wire rst 
+	, input wire receive_signal
+	, output reg [7:0] receive_data
+	, output reg received_toggle_signal);
+
     parameter STATE_IDLE = 0;
     parameter STATE_1ST_NEGEDGE = 1;
     parameter STATE_FETCH_DATA = 2;

@@ -1,4 +1,15 @@
-module toggle_digit(input wire clk, input wire sel, input wire [6:0] digit1, input wire [6:0] digit2, output reg [6:0] disp );
+`timescale 1ns / 1ps
+`ifdef ENV_VIVADO
+`include "./src/common.v"
+`endif
+
+module toggle_digit(
+	input wire clk
+	, input wire sel
+	, input wire [6:0] digit1
+	, input wire [6:0] digit2
+	, output reg [6:0] disp );
+
     always @ (posedge clk) begin
         if(sel == 0) begin
             disp <= digit1;

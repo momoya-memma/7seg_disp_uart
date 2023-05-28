@@ -1,6 +1,14 @@
-module toggle_sel(input wire clk, input wire rst,output reg sel);
+`timescale 1ns / 1ps
+`ifdef ENV_VIVADO
+`include "./src/common.v"
+`endif
+
+module toggle_sel(
+	input wire clk
+	, input wire rst
+	,output reg sel);
+
     parameter count_up = 1000000;//100MHz * 10msec
-    //parameter count_up = 10000;//100MHz * 10msec
     reg [19:0] counter;
     always @ (posedge clk) begin
         if(rst == 0) begin

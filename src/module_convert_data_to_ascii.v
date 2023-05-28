@@ -1,14 +1,40 @@
-module convert_data_to_ascii(input wire clk,input wire [7:0] ascii_data, input wire rst, input wire received_toggle_signal, output reg [3:0] decoded_hex_num);
-    reg previous_toggle_signal;
+`timescale 1ns / 1ps
+`ifdef ENV_VIVADO
+`include "./src/common.v"
+`endif
+
+module convert_data_to_ascii(
+	input wire clk
+	,input wire [7:0] ascii_data
+	, input wire rst
+	, input wire input_strobe
+	, output reg [3:0] decoded_hex_num
+	, output reg convert_complete_toggle_signal);
+
+    reg previous_input_strobe;
+	reg input_strobe_buf;
+
+	/*ストローブ信号とほかの入力信号が同位相で入ってくると、入力信号を入力ストローブ信号でフェッチする際に、
+	set up時間が満たせないので、一度ストローブ信号をレジスタで受けることで位相を遅らせる。*/
+	always @ (posedge clk) begin
+        if(rst == 0) begin
+			input_strobe_buf <= 0;
+        end else begin
+			input_strobe_buf <= input_strobe;
+		end
+	end
+
     always @ (posedge clk) begin
         if(rst == 0) begin
             decoded_hex_num <= 0;
-            previous_toggle_signal <= 0;
+            previous_input_strobe <= 0;
+			convert_complete_toggle_signal <= 0;
         end else begin
-            if(previous_toggle_signal == received_toggle_signal) begin
+            if(previous_input_strobe == input_strobe_buf) begin
             end else begin
                 decoded_hex_num <= asciidec(ascii_data);
-                previous_toggle_signal <= received_toggle_signal;
+                previous_input_strobe <= input_strobe_buf;
+				convert_complete_toggle_signal <= ~convert_complete_toggle_signal;
             end
 
         end

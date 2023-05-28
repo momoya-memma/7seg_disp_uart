@@ -1,4 +1,14 @@
-module convert_num_to_segment(input wire clk, input wire rst, input wire [3:0] num, output reg [6:0] segment);
+`timescale 1ns / 1ps
+`ifdef ENV_VIVADO
+`include "./src/common.v"
+`endif
+
+module convert_num_to_segment(
+	input wire clk
+	, input wire rst
+	, input wire [3:0] num
+	, output reg [6:0] segment);
+
     always @(posedge clk) begin 
         if(rst == 0) begin
             segment <= 0;
